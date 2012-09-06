@@ -207,6 +207,9 @@
 /* Xilinx PSS UART */
 #define PORT_XUARTPS	98
 
+/* AM33XX SUART */
+#define PORT_AM33XX_PRU_SUART   99
+
 #ifdef __KERNEL__
 
 #include <linux/compiler.h>

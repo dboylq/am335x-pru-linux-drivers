@@ -1963,8 +1963,8 @@ static void profibus_init(int evm_id, int profile)
 static struct evm_dev_cfg gen_purp_evm_dev_cfg[] = {
 	{enable_ecap0,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_1 |
 						PROFILE_2 | PROFILE_7) },
-	{lcdc_init,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_1 |
-						PROFILE_2 | PROFILE_7) },
+/*	{lcdc_init,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_1 |
+						PROFILE_2 | PROFILE_7) }, */
 	{tsc_init,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_1 |
 						PROFILE_2 | PROFILE_7) },
 	{rgmii1_init,	DEV_ON_BASEBOARD, PROFILE_ALL},
@@ -1976,7 +1976,7 @@ static struct evm_dev_cfg gen_purp_evm_dev_cfg[] = {
 		(PROFILE_ALL & ~PROFILE_2 & ~PROFILE_3)},
 	{i2c1_init,     DEV_ON_DGHTR_BRD, (PROFILE_ALL & ~PROFILE_2)},
 	{lis331dlh_init, DEV_ON_DGHTR_BRD, (PROFILE_ALL & ~PROFILE_2)},
-	{mcasp1_init,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_3 | PROFILE_7)},
+/*	{mcasp1_init,	DEV_ON_DGHTR_BRD, (PROFILE_0 | PROFILE_3 | PROFILE_7)}, */
 	{mmc1_init,	DEV_ON_DGHTR_BRD, PROFILE_2},
 	{mmc2_wl12xx_init,	DEV_ON_BASEBOARD, (PROFILE_0 | PROFILE_3 |
 								PROFILE_5)},
@@ -2035,7 +2035,7 @@ static struct evm_dev_cfg evm_sk_dev_cfg[] = {
 	{mmc0_init,	DEV_ON_BASEBOARD, PROFILE_ALL},
 	{rgmii1_init,	DEV_ON_BASEBOARD, PROFILE_ALL},
 	{rgmii2_init,	DEV_ON_BASEBOARD, PROFILE_ALL},
-	{lcdc_init,     DEV_ON_BASEBOARD, PROFILE_ALL},
+/*	{lcdc_init,     DEV_ON_BASEBOARD, PROFILE_ALL}, */
 	{enable_ecap2,     DEV_ON_BASEBOARD, PROFILE_ALL},
 	{tsc_init,	DEV_ON_BASEBOARD, PROFILE_ALL},
 	{gpio_keys_init,  DEV_ON_BASEBOARD, PROFILE_ALL},

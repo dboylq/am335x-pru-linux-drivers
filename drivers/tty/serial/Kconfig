@@ -1610,4 +1610,6 @@ config SERIAL_XILINX_PS_UART_CONSOLE
 	help
 	  Enable a Xilinx PS UART port to be the system console.
 
+source "drivers/tty/serial/am335x_pru_suart/Kconfig"
+
 endmenu

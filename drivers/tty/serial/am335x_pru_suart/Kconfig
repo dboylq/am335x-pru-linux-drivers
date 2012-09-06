@@ -1,0 +1,21 @@
+config SERIAL_SUART_PRU
+	depends on SOC_OMAPAM33XX
+	select SERIAL_CORE
+	tristate "PRU based SUART emulation"
+	---help---
+	Enable this to emulate a UART controller on the PRU.
+	If not sure, mark N
+
+config AM33XX_SUART_MCASP0
+    bool "SUART on McASP0"
+    depends on SOC_OMAPAM33XX && SERIAL_SUART_PRU
+    default "y"
+    ---help---
+    Choose this option if SUART ports are on McASP0
+
+config AM33XX_SUART_MCASP1
+    bool "SUART on McASP1"
+    depends on SOC_OMAPAM33XX && SERIAL_SUART_PRU
+    default "n"
+    ---help---
+    Choose this option if SUART ports are on McASP1

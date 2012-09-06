@@ -26,6 +26,8 @@
 #include <linux/platform_data/uio_pruss.h>
 #include <linux/pwm/pwm.h>
 #include <linux/input/ti_tscadc.h>
+#include <linux/mfd/pruss.h>
+#include <linux/mfd/core.h>
 
 #include <mach/hardware.h>
 #include <mach/irqs.h>
@@ -1152,6 +1154,115 @@ int __init am335x_register_pruss_uio(struct uio_pruss_pdata *config)
 	return platform_device_register(&am335x_pruss_uio_dev);
 }
 
+#define AM33XX_SHARED_RAM_BASE   0x4a310000
+
+static struct resource am335x_pruss_suart_resources[] = {
+    {
+        .start  = AM33XX_ICSS_BASE,
+        .end    = AM33XX_ICSS_BASE + AM33XX_ICSS_LEN,
+        .flags  = IORESOURCE_MEM,
+    },
+    {
+        .start  = AM33XX_SHARED_RAM_BASE,
+        .end    = AM33XX_SHARED_RAM_BASE + (SZ_1K * 8) - 1,
+        .flags  = IORESOURCE_MEM,
+    },
+#ifdef CONFIG_AM33XX_SUART_MCASP0
+    {
+        .start  = AM33XX_ASP0_BASE,
+        .end    = AM33XX_ASP0_BASE + (SZ_1K * 12) - 1,
+        .flags  = IORESOURCE_MEM,
+    },
+#endif
+#ifdef CONFIG_AM33XX_SUART_MCASP1
+    {
+        .start  = AM33XX_ASP1_BASE,
+        .end    = AM33XX_ASP1_BASE + (SZ_1K * 12) - 1,
+        .flags  = IORESOURCE_MEM,
+    },
+#endif
+#ifdef CONFIG_AM33XX_SUART_MCASP2
+    {
+        .start  = AM33XX_ASP2_BASE,
+        .end    = AM33XX_ASP2_BASE + (SZ_1K * 12) - 1,
+        .flags  = IORESOURCE_MEM,
+    },
+#endif
+};
+
+static struct mfd_cell cell[] = {
+    {
+        .name           = "am33xx_pruss_uart",
+        .id             = 1,
+        .num_resources  = ARRAY_SIZE(am335x_pruss_suart_resources),
+        .resources      = am335x_pruss_suart_resources,
+    },
+    {
+        .name		= NULL,
+    },
+};
+
+static struct resource pruss_resources[] = {
+	{
+		.start	= AM33XX_ICSS_BASE,
+		.end	= AM33XX_ICSS_BASE + AM33XX_ICSS_LEN,
+		.flags	= IORESOURCE_MEM,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_0,
+		.end	= AM33XX_IRQ_ICSS0_0,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_1,
+		.end	= AM33XX_IRQ_ICSS0_1,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_2,
+		.end	= AM33XX_IRQ_ICSS0_2,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_3,
+		.end	= AM33XX_IRQ_ICSS0_3,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_4,
+		.end	= AM33XX_IRQ_ICSS0_4,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_5,
+		.end	= AM33XX_IRQ_ICSS0_5,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_6,
+		.end	= AM33XX_IRQ_ICSS0_6,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.start	= AM33XX_IRQ_ICSS0_7,
+		.end	= AM33XX_IRQ_ICSS0_7,
+		.flags	= IORESOURCE_IRQ,
+	},
+};
+
+static struct platform_device am335x_pruss_mfd_dev = {
+	.name		= "pruss_mfd",
+	.id		= -1,
+	.num_resources	= ARRAY_SIZE(pruss_resources),
+	.resource	= pruss_resources,
+};
+
+int __init am335x_register_pruss_mfd(struct mfd_cell *cell)
+{
+	am335x_pruss_mfd_dev.dev.platform_data = cell;
+	platform_device_register(&am335x_pruss_mfd_dev);
+	return 0;
+}
 static struct platform_device am335x_sgx = {
 	.name	= "sgx",
 	.id	= -1,
@@ -1167,6 +1278,7 @@ static int __init omap2_init_devices(void)
 	 * please keep these calls, and their implementations above,
 	 * in alphabetical order so they're easier to sort through.
 	 */
+	int ret;
 	omap_init_audio();
 	omap_init_mcpdm();
 	omap_init_dmic();
@@ -1186,6 +1298,8 @@ static int __init omap2_init_devices(void)
 	if (omap3_has_sgx())
 		platform_device_register(&am335x_sgx);
 #endif
+	ret=am335x_register_pruss_mfd(cell);
+	printk("\nline=%d,%d\n",__LINE__,ret);
 	return 0;
 }
 arch_initcall(omap2_init_devices);

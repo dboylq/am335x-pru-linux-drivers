@@ -68,6 +68,16 @@ config MFD_TI_SSP
 	  To compile this driver as a module, choose M here: the
 	  module will be called ti-ssp.
 
+config MFD_PRUSS
+        tristate "Texas Instruments MFD PRUSS support"
+        depends on ARCH_DAVINCI_DA850 || SOC_OMAPAM33XX
+        select MFD_CORE
+        help
+          This driver provides support API through MFD for the programmable
+          realtime unit (PRU) present on TI's da8xx/omapl/am18xx/am33xx processors.
+          It provides basic read, write, config, enable, disable
+          routines to facilitate devices emulated on it.
+
 config HTC_EGPIO
 	bool "HTC EGPIO support"
 	depends on GENERIC_HARDIRQS && GPIOLIB && ARM
